@@ -4,21 +4,21 @@
 
 import 'package:freight_tracking/app_barrel.dart';
 
-abstract interface class UserRepository<T extends Entity> {
-  Future<T?> getCurrentLoggedInUser();
+abstract interface class UserRepository implements Repository<UserEntity> {
+  Future<UserEntity?> getCurrentLoggedInUser();
 
-  Future<T?> readUserByCredentials({
+  Future<UserEntity?> readUserByCredentials({
     required String email,
     required String hashedPassword,
   });
 
-  Future<T?> create({
+  Future<UserEntity?> create({
     required String email,
     required String name,
     required String hashedPassword,
   });
 
-  Future<void> updateUserLoggedInStatus(T user, {bool isLoggedIn = true});
+  Future<void> updateUserLoggedInStatus(UserEntity user, {bool isLoggedIn = true});
 
   Future<void> logout();
 }

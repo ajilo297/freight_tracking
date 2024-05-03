@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:freight_tracking/app_barrel.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockUserRepository extends Mock implements UserRepository<UserEntity> {}
+class MockUserRepository extends Mock implements UserRepository {}
 
 void main() {
   const user = UserEntity(
@@ -14,7 +14,7 @@ void main() {
     hashedPassword: 'hashedPassword',
     name: 'name',
   );
-  UserRepository<UserEntity> userRepository = MockUserRepository();
+  UserRepository userRepository = MockUserRepository();
 
   group('AutoLogin', () {
     test('returns user when user repository returns signed in user', () async {

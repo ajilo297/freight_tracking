@@ -7,7 +7,7 @@ import 'package:freight_tracking/app_barrel.dart';
 class AuthUseCase {
   const AuthUseCase(this.userRepository);
 
-  final UserRepository<UserEntity> userRepository;
+  final UserRepository userRepository;
 
   Future<UserEntity?> autoLogin() async {
     final currentUser = await userRepository.getCurrentLoggedInUser();
