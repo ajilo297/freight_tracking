@@ -2,6 +2,9 @@
  * Copyright (c) 2024 Ajil Oommen. All Rights Reserved
  */
 
+export 'dart:convert';
+
+export 'package:crypto/crypto.dart';
 export 'package:dart_mappable/dart_mappable.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';

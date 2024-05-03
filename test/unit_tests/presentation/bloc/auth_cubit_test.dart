@@ -41,9 +41,7 @@ void main() {
     'Login returns AuthenticatedState when user credentials are correct',
     build: () => AuthCubit(useCase),
     setUp: () {
-      when(() => useCase.getHashedPassword('password')).thenAnswer(
-        (_) async => 'hashedPassword',
-      );
+      when(() => useCase.getHashedPassword('password')).thenReturn('hashedPassword');
       when(() => useCase.login('email', 'hashedPassword')).thenAnswer(
         (_) async => user,
       );
@@ -60,9 +58,7 @@ void main() {
     'Login returns UnauthenticatedState when user credentials are incorrect',
     build: () => AuthCubit(useCase),
     setUp: () {
-      when(() => useCase.getHashedPassword('incorrectPassword')).thenAnswer(
-        (_) async => 'incorrectHashedPassword',
-      );
+      when(() => useCase.getHashedPassword('incorrectPassword')).thenReturn('incorrectHashedPassword');
       when(() => useCase.login('email', 'incorrectHashedPassword')).thenAnswer(
         (_) async => null,
       );
@@ -93,9 +89,7 @@ void main() {
     'Register returns AuthenticatedState when user is registered',
     build: () => AuthCubit(useCase),
     setUp: () {
-      when(() => useCase.getHashedPassword('password')).thenAnswer(
-        (_) async => 'hashedPassword',
-      );
+      when(() => useCase.getHashedPassword('password')).thenReturn('hashedPassword');
       when(() => useCase.register('email', 'name', 'hashedPassword')).thenAnswer(
         (_) async => user,
       );
@@ -112,9 +106,7 @@ void main() {
     'Register returns UnauthenticatedState when user is not registered',
     build: () => AuthCubit(useCase),
     setUp: () {
-      when(() => useCase.getHashedPassword('incorrectPassword')).thenAnswer(
-        (_) async => 'incorrectHashedPassword',
-      );
+      when(() => useCase.getHashedPassword('incorrectPassword')).thenReturn('incorrectHashedPassword');
       when(() => useCase.register('email', 'name', 'incorrectHashedPassword')).thenAnswer(
         (_) async => null,
       );
