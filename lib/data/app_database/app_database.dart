@@ -5,8 +5,9 @@
 import 'package:freight_tracking/app_barrel.dart' show User, UserDao;
 import 'package:freight_tracking/db_barrel.dart';
 
+export 'app_database_exceptions.dart';
 export 'dao/dao.dart';
-export 'tables/tables.dart';
+export 'table/table.dart';
 
 part 'app_database.g.dart';
 

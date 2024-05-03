@@ -13,7 +13,11 @@ class UserDao extends DatabaseAccessor<AppDatabase> with _$UserDaoMixin {
 
   /// Inserts a new user into the database.
   Future<int> createUser(UserData userData) async {
-    return into(user).insert(userData);
+    try {
+      return into(user).insert(userData);
+    } catch (_) {
+      throw const UserWithEmailExistsException();
+    }
   }
 
   /// Returns the user data if the user is successfully logged in, otherwise null.
@@ -28,7 +32,7 @@ class UserDao extends DatabaseAccessor<AppDatabase> with _$UserDaoMixin {
     try {
       userData = await query.getSingle();
     } catch (_) {
-      // no-op
+      throw const InvalidCredentialsException();
     }
 
     return userData;

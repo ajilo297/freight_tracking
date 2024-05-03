@@ -53,7 +53,10 @@ void main() {
   test('User login with incorrect credentials returns null', () async {
     final userDao = appDatabase.userDao;
     await userDao.createUser(user);
-    final userFromDb = await userDao.loginWithCredentials('email', 'wrongPassword');
-    expect(userFromDb, null);
+
+    expectLater(
+      userDao.loginWithCredentials('email', 'wrongPassword'),
+      throwsA(const InvalidCredentialsException()),
+    );
   });
 }
