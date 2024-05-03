@@ -10,46 +10,26 @@ class AuthUseCase {
   final UserRepository userRepository;
 
   Future<UserEntity?> autoLogin() async {
-    final currentUser = await userRepository.getCurrentLoggedInUser();
-    return currentUser;
+    return await userRepository.readLoggedInUser();
   }
 
   Future<UserEntity?> login(String email, String hashedPassword) async {
-    final user = await userRepository.readUserByCredentials(
+    return await userRepository.readByCredentials(
       email: email,
       hashedPassword: hashedPassword,
     );
-
-    if (user == null) return null;
-
-    await userRepository.updateUserLoggedInStatus(user);
-    return user;
   }
 
   Future<UserEntity?> register(String email, String name, String hashedPassword) async {
-    final user = await userRepository.create(
+    return await userRepository.create(
       email: email,
       name: name,
       hashedPassword: hashedPassword,
     );
-
-    if (user == null) return null;
-
-    await userRepository.updateUserLoggedInStatus(
-      user,
-      isLoggedIn: true,
-    );
-    return user;
   }
 
   Future<void> logout() async {
-    final user = await userRepository.getCurrentLoggedInUser();
-    if (user == null) return;
-
-    await userRepository.updateUserLoggedInStatus(
-      user,
-      isLoggedIn: false,
-    );
+    return await userRepository.logout();
   }
 
   String getHashedPassword(String password) {

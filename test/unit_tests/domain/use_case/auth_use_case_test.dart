@@ -19,7 +19,7 @@ void main() {
   group('AutoLogin', () {
     test('returns user when user repository returns signed in user', () async {
       when(
-        () => userRepository.getCurrentLoggedInUser(),
+        () => userRepository.readLoggedInUser(),
       ).thenAnswer((_) async => user);
 
       final authUseCase = AuthUseCase(userRepository);
@@ -30,7 +30,7 @@ void main() {
 
     test('does not return a user when user repository returns null', () async {
       when(
-        () => userRepository.getCurrentLoggedInUser(),
+        () => userRepository.readLoggedInUser(),
       ).thenAnswer((_) async => null);
 
       final authUseCase = AuthUseCase(userRepository);
@@ -42,14 +42,10 @@ void main() {
 
   group('Login', () {
     test('returns user when logging in with correct credentials', () async {
-      when(() => userRepository.readUserByCredentials(
+      when(() => userRepository.readByCredentials(
             email: 'email',
             hashedPassword: 'hashedPassword',
           )).thenAnswer((_) async => user);
-
-      when(() => userRepository.updateUserLoggedInStatus(user)).thenAnswer(
-        (_) async {},
-      );
 
       final authUseCase = AuthUseCase(userRepository);
       final result = await authUseCase.login(
@@ -61,7 +57,7 @@ void main() {
     });
 
     test('does not return a user when logging in with incorrect credentials', () async {
-      when(() => userRepository.readUserByCredentials(
+      when(() => userRepository.readByCredentials(
             email: 'email',
             hashedPassword: 'hashedPassword',
           )).thenAnswer((_) async => null);
@@ -80,11 +76,6 @@ void main() {
             name: 'name',
             hashedPassword: 'hashedPassword',
           )).thenAnswer((_) async => user);
-
-      when(() => userRepository.updateUserLoggedInStatus(
-            user,
-            isLoggedIn: true,
-          )).thenAnswer((_) async {});
 
       final authUseCase = AuthUseCase(userRepository);
       final result = await authUseCase.register(
@@ -116,19 +107,7 @@ void main() {
 
   group('Logout', () {
     test('logs out user when user is logged in', () async {
-      when(() => userRepository.getCurrentLoggedInUser()).thenAnswer((_) async => user);
-
-      when(() => userRepository.updateUserLoggedInStatus(
-            user,
-            isLoggedIn: false,
-          )).thenAnswer((_) async {});
-
-      final authUseCase = AuthUseCase(userRepository);
-      await authUseCase.logout();
-    });
-
-    test('does not log out user when user is not logged in', () async {
-      when(() => userRepository.getCurrentLoggedInUser()).thenAnswer((_) async => null);
+      when(() => userRepository.logout()).thenAnswer((_) async {});
 
       final authUseCase = AuthUseCase(userRepository);
       await authUseCase.logout();

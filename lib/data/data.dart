@@ -3,3 +3,4 @@
  */
 
 export 'app_database/app_database.dart';
+export 'repository/repository.dart';

@@ -11,45 +11,27 @@ part 'user_dao.g.dart';
 class UserDao extends DatabaseAccessor<AppDatabase> with _$UserDaoMixin {
   UserDao(super.db);
 
-  /// Inserts a new user into the database.
-  Future<int> createUser(UserData userData) async {
-    try {
-      return into(user).insert(userData);
-    } catch (_) {
-      throw const UserWithEmailExistsException();
-    }
+  Future<UserData?> create(UserData userData) async {
+    return await into(user).insertReturningOrNull(
+      userData,
+      mode: InsertMode.insertOrIgnore,
+    );
   }
 
-  /// Returns the user data if the user is successfully logged in, otherwise null.
-  @visibleForTesting
   Future<UserData?> readUserByCredentials(String email, String hashedPassword) async {
     final query = select(user)
-      ..where((u) {
-        return u.email.equals(email) & u.hashedPassword.equals(hashedPassword);
-      });
-
-    UserData? userData;
-    try {
-      userData = await query.getSingle();
-    } catch (_) {
-      throw const InvalidCredentialsException();
-    }
-
-    return userData;
+      ..where(
+        (u) => u.email.equals(email) & u.hashedPassword.equals(hashedPassword),
+      );
+    return query.getSingleOrNull();
   }
 
-  /// Returns the user data if the user is successfully logged in, otherwise null.
-  Future<UserData?> loginWithCredentials(String email, String hashedPassword) async {
-    final userData = await readUserByCredentials(email, hashedPassword);
+  Future<UserData?> readCurrentLoggedInUser() async {
+    final query = select(user)..where((u) => u.isLoggedIn.equals(true));
+    return query.getSingleOrNull();
+  }
 
-    if (userData == null) return null;
-
-    final statement = update(user)
-      ..where((t) {
-        return t.email.equals(email) & t.hashedPassword.equals(hashedPassword);
-      });
-
-    await statement.write(const UserCompanion(isLoggedIn: Value(true)));
-    return await readUserByCredentials(email, hashedPassword);
+  Future<void> updateUser(UserData userData) async {
+    await update(user).replace(userData);
   }
 }

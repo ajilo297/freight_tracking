@@ -24,39 +24,68 @@ void main() {
     await appDatabase.close();
   });
 
-  test('User is created with credentials', () async {
-    final userDao = appDatabase.userDao;
-    await userDao.createUser(user);
-    final userFromDb = await userDao.readUserByCredentials('email', 'hashedPassword');
-    expect(userFromDb, user);
+  group('Create', () {
+    test('Create user', () async {
+      final userDao = UserDao(appDatabase);
+      final createdUser = await userDao.create(user);
+      expect(createdUser, user);
+    });
+
+    test('Create user with same email does not create', () async {
+      final userDao = UserDao(appDatabase);
+      await userDao.create(user);
+      final createdUser = await userDao.create(user);
+      expect(createdUser, null);
+    });
   });
 
-  test('User with same email ID cannot be created', () async {
-    final userDao = appDatabase.userDao;
-    await userDao.createUser(user);
-    final userFromDb = await userDao.readUserByCredentials('email', 'hashedPassword');
-    expect(userFromDb, user);
+  group('Read user by credentials', () {
+    test('Read user by credentials', () async {
+      final userDao = UserDao(appDatabase);
+      await userDao.create(user);
+      final readUser = await userDao.readUserByCredentials(user.email, user.hashedPassword);
+      expect(readUser, user);
+    });
 
-    expectLater(
-      userDao.createUser(user.copyWith(hashedPassword: 'newHashedPassword')),
-      throwsException,
-    );
+    test('Read user by credentials with wrong password', () async {
+      final userDao = UserDao(appDatabase);
+      await userDao.create(user);
+      final readUser = await userDao.readUserByCredentials(user.email, 'wrongPassword');
+      expect(readUser, null);
+    });
+
+    test('Read user by credentials with wrong email', () async {
+      final userDao = UserDao(appDatabase);
+      await userDao.create(user);
+      final readUser = await userDao.readUserByCredentials('wrongEmail', user.hashedPassword);
+      expect(readUser, null);
+    });
   });
 
-  test('User login with correct credentials returns UserData with isLoggedIn true', () async {
-    final userDao = appDatabase.userDao;
-    await userDao.createUser(user);
-    final userFromDb = await userDao.loginWithCredentials('email', 'hashedPassword');
-    expect(userFromDb, user.copyWith(isLoggedIn: true));
+  group('Read current logged in user', () {
+    test('Read current logged in user', () async {
+      final userDao = UserDao(appDatabase);
+      await userDao.create(user);
+      final readUser = await userDao.readCurrentLoggedInUser();
+      expect(readUser, null);
+    });
+
+    test('Read current logged in user after login', () async {
+      final userDao = UserDao(appDatabase);
+      await userDao.create(user.copyWith(isLoggedIn: true));
+      final readUser = await userDao.readCurrentLoggedInUser();
+      expect(readUser, isA<UserData>().having((u) => u.isLoggedIn, 'isLoggedIn', true));
+    });
   });
 
-  test('User login with incorrect credentials returns null', () async {
-    final userDao = appDatabase.userDao;
-    await userDao.createUser(user);
-
-    expectLater(
-      userDao.loginWithCredentials('email', 'wrongPassword'),
-      throwsA(const InvalidCredentialsException()),
-    );
+  group('Update user', () {
+    test('Update user', () async {
+      final userDao = UserDao(appDatabase);
+      await userDao.create(user);
+      final updatedUser = user.copyWith(name: 'newName');
+      await userDao.updateUser(updatedUser);
+      final readUser = await userDao.readUserByCredentials(user.email, user.hashedPassword);
+      expect(readUser, updatedUser);
+    });
   });
 }
