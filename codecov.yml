@@ -1,0 +1,5 @@
+ignore:
+  - "lib/**/*.g.dart"
+  - "lib/**/*.freezed.dart"
+  - "lib/**/*.gr.dart"
+  - "lib/**/*.mapper.dart"
