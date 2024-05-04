@@ -38,8 +38,8 @@ class FreightEntity extends Entity with FreightEntityMappable {
 @MappableEnum()
 enum FreightStatus {
   pending('Pending', Colors.amber, textColor: Colors.black, shortName: 'P'),
-  readyForDispatch('Ready for Dispatch', Colors.indigo, shortName: 'R'),
-  inTransit('In Transit', Colors.purple, shortName: 'T'),
+  readyForDispatch('Ready for Dispatch', textColor: Colors.black, Colors.cyan, shortName: 'R'),
+  inTransit('In Transit', Colors.orangeAccent, textColor: Colors.black, shortName: 'T'),
   delivered('Delivered', Colors.green, shortName: 'D');
 
   final String value;

@@ -32,6 +32,10 @@ class AppRouter extends $AppRouter implements AutoRouteGuard {
               path: 'freight',
               initial: true,
             ),
+            AutoRoute(
+              page: FreightDetailsRoute.page,
+              path: 'freight-details',
+            ),
           ],
         ),
       ];

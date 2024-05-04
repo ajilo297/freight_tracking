@@ -9,10 +9,13 @@ class FreightList extends StatelessWidget {
     super.key,
     this.freightList = const [],
     this.loading = false,
+    required this.onFreightSelected,
   });
 
   final List<FreightEntity> freightList;
   final bool loading;
+
+  final void Function(FreightEntity freight) onFreightSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +36,9 @@ class FreightList extends StatelessWidget {
         Expanded(
           child: ListView.builder(
             itemBuilder: (context, index) => FreightListTile(
+              onTap: () => onFreightSelected(
+                freightList.elementAt(index),
+              ),
               freight: freightList.elementAt(index),
             ),
             itemCount: freightList.length,

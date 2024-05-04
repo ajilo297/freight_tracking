@@ -29,6 +29,7 @@ void main() {
           home: FreightList(
             freightList: freights,
             loading: false,
+            onFreightSelected: (freight) {},
           ),
         ),
       );
@@ -42,10 +43,11 @@ void main() {
     'Freight List Widget UI is rendered with loading indicator',
     (widgetTester) async {
       await widgetTester.pumpWidget(
-        const MaterialApp(
+        MaterialApp(
           home: FreightList(
-            freightList: [],
+            freightList: const [],
             loading: true,
+            onFreightSelected: (freight) {},
           ),
         ),
       );
@@ -59,10 +61,11 @@ void main() {
     'Freight List Widget UI is rendered with no freights',
     (widgetTester) async {
       await widgetTester.pumpWidget(
-        const MaterialApp(
+        MaterialApp(
           home: FreightList(
-            freightList: [],
+            freightList: const [],
             loading: false,
+            onFreightSelected: (freight) {},
           ),
         ),
       );
@@ -80,6 +83,7 @@ void main() {
           home: FreightList(
             freightList: freights,
             loading: true,
+            onFreightSelected: (freight) {},
           ),
         ),
       );
@@ -87,6 +91,27 @@ void main() {
       expect(find.byType(FreightList), findsOneWidget);
       expect(find.byType(FreightListTile), findsNWidgets(freights.length));
       expect(find.byType(LinearProgressIndicator), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'On selecting a freight, onFreightSelected callback is called with the selected freight',
+    (widgetTester) async {
+      FreightEntity? selectedFreight;
+      await widgetTester.pumpWidget(
+        MaterialApp(
+          home: FreightList(
+            freightList: freights,
+            loading: false,
+            onFreightSelected: (freight) {
+              selectedFreight = freight;
+            },
+          ),
+        ),
+      );
+
+      await widgetTester.tap(find.byType(FreightListTile).first);
+      expect(selectedFreight, freights.first);
     },
   );
 }

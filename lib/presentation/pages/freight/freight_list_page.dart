@@ -15,6 +15,7 @@ class FreightListPage extends StatelessWidget {
           builder: (context, state) => FreightList(
             freightList: state.data,
             loading: state.loading,
+            onFreightSelected: (freight) => context.router.push(FreightDetailsRoute(freight: freight)),
           ),
         ),
       );
