@@ -4,7 +4,7 @@
 
 import 'package:freight_tracking/app_barrel.dart';
 
-export 'user/user.dart';
+export 'user_entity/user_entity.dart';
 
 part 'entity.mapper.dart';
 

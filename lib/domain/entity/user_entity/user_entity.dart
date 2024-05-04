@@ -4,7 +4,7 @@
 
 import 'package:freight_tracking/app_barrel.dart';
 
-part 'user.mapper.dart';
+part 'user_entity.mapper.dart';
 
 @MappableClass()
 class UserEntity extends Entity with UserEntityMappable {
