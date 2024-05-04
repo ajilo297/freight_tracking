@@ -37,12 +37,14 @@ enum FreightStatus {
 @MappableClass()
 class FreightEntityFilter extends EntityFilter with FreightEntityFilterMappable {
   const FreightEntityFilter({
+    this.id,
     this.status,
     this.origin,
     this.destination,
     super.offset = 0,
   });
 
+  final int? id;
   final FreightStatus? status;
   final String? origin;
   final String? destination;

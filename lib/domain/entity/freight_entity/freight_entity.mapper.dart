@@ -233,6 +233,9 @@ class FreightEntityFilterMapper extends ClassMapperBase<FreightEntityFilter> {
   @override
   final String id = 'FreightEntityFilter';
 
+  static int? _$id(FreightEntityFilter v) => v.id;
+  static const Field<FreightEntityFilter, int> _f$id =
+      Field('id', _$id, opt: true);
   static FreightStatus? _$status(FreightEntityFilter v) => v.status;
   static const Field<FreightEntityFilter, FreightStatus> _f$status =
       Field('status', _$status, opt: true);
@@ -248,6 +251,7 @@ class FreightEntityFilterMapper extends ClassMapperBase<FreightEntityFilter> {
 
   @override
   final MappableFields<FreightEntityFilter> fields = const {
+    #id: _f$id,
     #status: _f$status,
     #origin: _f$origin,
     #destination: _f$destination,
@@ -256,6 +260,7 @@ class FreightEntityFilterMapper extends ClassMapperBase<FreightEntityFilter> {
 
   static FreightEntityFilter _instantiate(DecodingData data) {
     return FreightEntityFilter(
+        id: data.dec(_f$id),
         status: data.dec(_f$status),
         origin: data.dec(_f$origin),
         destination: data.dec(_f$destination),
@@ -319,7 +324,8 @@ abstract class FreightEntityFilterCopyWith<$R, $In extends FreightEntityFilter,
     $Out> implements EntityFilterCopyWith<$R, $In, $Out> {
   @override
   $R call(
-      {FreightStatus? status,
+      {int? id,
+      FreightStatus? status,
       String? origin,
       String? destination,
       int? offset});
@@ -337,11 +343,13 @@ class _FreightEntityFilterCopyWithImpl<$R, $Out>
       FreightEntityFilterMapper.ensureInitialized();
   @override
   $R call(
-          {Object? status = $none,
+          {Object? id = $none,
+          Object? status = $none,
           Object? origin = $none,
           Object? destination = $none,
           int? offset}) =>
       $apply(FieldCopyWithData({
+        if (id != $none) #id: id,
         if (status != $none) #status: status,
         if (origin != $none) #origin: origin,
         if (destination != $none) #destination: destination,
@@ -349,6 +357,7 @@ class _FreightEntityFilterCopyWithImpl<$R, $Out>
       }));
   @override
   FreightEntityFilter $make(CopyWithData data) => FreightEntityFilter(
+      id: data.get(#id, or: $value.id),
       status: data.get(#status, or: $value.status),
       origin: data.get(#origin, or: $value.origin),
       destination: data.get(#destination, or: $value.destination),

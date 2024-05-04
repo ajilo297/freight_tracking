@@ -9,7 +9,7 @@ class FreightUseCase {
 
   final FreightRepository _freightRepository;
 
-  Future<FreightEntity> create(FreightEntity freight) async {
+  Future<FreightEntity?> create(FreightEntity freight) async {
     final entity = await _freightRepository.create(freight);
     return entity;
   }
@@ -24,7 +24,7 @@ class FreightUseCase {
     return entities;
   }
 
-  Future<FreightEntity> update(FreightEntity freight) async {
+  Future<FreightEntity?> update(FreightEntity freight) async {
     final entity = await _freightRepository.update(freight);
     return entity;
   }
