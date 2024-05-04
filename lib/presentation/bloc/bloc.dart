@@ -5,6 +5,7 @@
 import 'package:freight_tracking/app_barrel.dart';
 
 export 'auth_cubit/auth_cubit.dart';
+export 'freight_list_cubit/freight_list_cubit.dart';
 
 mixin ExceptionEmitter<T> on Cubit<T> {
   @visibleForOverriding

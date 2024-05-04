@@ -3,3 +3,4 @@
  */
 
 export 'auth_use_case.dart';
+export 'freight_use_case.dart';
