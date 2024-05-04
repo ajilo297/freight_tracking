@@ -2,4 +2,22 @@
  * Copyright (c) 2024 Ajil Oommen. All Rights Reserved
  */
 
-void main() {}
+import 'package:freight_tracking/app_barrel.dart';
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  final useCase = AuthUseCase(LocalUserRepository(AppDatabase()));
+  final AuthCubit authCubit = AuthCubit.instance
+    ..useCase = useCase
+    ..autoLogin();
+
+  runApp(
+    BlocProvider<AuthCubit>.value(
+      value: authCubit,
+      child: FreightTrackingApp(
+        appRouter: AppRouter(),
+        authCubit: authCubit,
+      ),
+    ),
+  );
+}

@@ -8,16 +8,29 @@ part 'auth_cubit.freezed.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> with ExceptionEmitter<AuthState> {
-  AuthCubit(this._authUseCase) : super(const AuthInitialState());
+  @visibleForTesting
+  AuthCubit.internal([AuthUseCase? useCase])
+      : _authUseCase = useCase,
+        super(const AuthInitialState());
 
-  final AuthUseCase _authUseCase;
+  static final AuthCubit _instance = AuthCubit.internal();
+
+  static AuthCubit get instance => _instance;
+
+  late AuthUseCase? _authUseCase;
+
+  set useCase(AuthUseCase authUseCase) {
+    _authUseCase = authUseCase;
+  }
+
+  AuthUseCase get _useCase => _authUseCase!;
 
   @override
   AuthState get loadingState => const AuthLoadingState();
 
   void autoLogin() {
     emitInitialOnException(() async {
-      final user = await _authUseCase.autoLogin();
+      final user = await _useCase.autoLogin();
       if (user != null) {
         emit(AuthenticatedState(user));
       } else {
@@ -26,10 +39,10 @@ class AuthCubit extends Cubit<AuthState> with ExceptionEmitter<AuthState> {
     });
   }
 
-  void login(String email, String password) {
+  void login({required String email, required String password}) {
     emitInitialOnException(() async {
-      final hashedPassword = await _authUseCase.getHashedPassword(password);
-      final user = await _authUseCase.login(email, hashedPassword);
+      final hashedPassword = await _useCase.getHashedPassword(password);
+      final user = await _useCase.login(email, hashedPassword);
       if (user != null) {
         emit(AuthenticatedState(user));
       } else {
@@ -40,7 +53,7 @@ class AuthCubit extends Cubit<AuthState> with ExceptionEmitter<AuthState> {
 
   void logout() {
     emitInitialOnException(() async {
-      await _authUseCase.logout();
+      await _useCase.logout();
       emit(const UnauthenticatedState());
     });
   }
@@ -51,8 +64,8 @@ class AuthCubit extends Cubit<AuthState> with ExceptionEmitter<AuthState> {
     required String password,
   }) {
     emitInitialOnException(() async {
-      final hashedPassword = await _authUseCase.getHashedPassword(password);
-      final user = await _authUseCase.register(email, name, hashedPassword);
+      final hashedPassword = await _useCase.getHashedPassword(password);
+      final user = await _useCase.register(email, name, hashedPassword);
       if (user != null) {
         emit(AuthenticatedState(user));
       } else {

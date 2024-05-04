@@ -16,7 +16,7 @@ part 'app_database.g.dart';
   daos: [UserDao],
 )
 class AppDatabase extends _$AppDatabase {
-  AppDatabase(QueryExecutor? queryExecutor) : super(queryExecutor ?? _openConnection());
+  AppDatabase([QueryExecutor? queryExecutor]) : super(queryExecutor ?? _openConnection());
 
   @override
   int get schemaVersion => 1;
