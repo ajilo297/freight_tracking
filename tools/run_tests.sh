@@ -3,6 +3,8 @@
 #
 
 flutter test --coverage
-lcov --remove coverage/lcov.info 'lib/*/*.freezed.dart' 'lib/*/*.g.dart' 'lib/*/*.gr.dart' -o coverage/lcov.info
+lcov --remove coverage/lcov.info \
+  'lib/**/*.g.dart' \
+  -o coverage/lcov.info
 genhtml -o coverage_report coverage/lcov.info
 open coverage_report/index.html
