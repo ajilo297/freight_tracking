@@ -5,25 +5,31 @@
 import 'package:freight_tracking/app_barrel.dart';
 
 class FreightUseCase {
-  Future<void> create(FreightEntity freight) async {
-    // TODO(ajilo297): implement create
+  const FreightUseCase(this._freightRepository);
+
+  final FreightRepository _freightRepository;
+
+  Future<FreightEntity> create(FreightEntity freight) async {
+    final entity = await _freightRepository.create(freight);
+    return entity;
   }
 
-  Future<FreightEntity?> read(String id) async {
-    // TODO(ajilo297): implement loadDetails
-    return null;
+  Future<FreightEntity?> read(FreightEntityFilter filter) async {
+    final entity = await _freightRepository.read(filter);
+    return entity;
   }
 
   Future<List<FreightEntity>> readList(FreightEntityFilter filter) async {
-    // TODO(ajilo297): implement loadList
-    return [];
+    final entities = await _freightRepository.readList(filter);
+    return entities;
   }
 
-  Future<void> update(FreightEntity freight) async {
-    // TODO(ajilo297): implement update
+  Future<FreightEntity> update(FreightEntity freight) async {
+    final entity = await _freightRepository.update(freight);
+    return entity;
   }
 
-  Future<void> delete(String id) async {
-    // TODO(ajilo297): implement delete
+  Future<void> delete(FreightEntityFilter filter) async {
+    await _freightRepository.delete(filter);
   }
 }

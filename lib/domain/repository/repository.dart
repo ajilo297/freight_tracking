@@ -4,16 +4,19 @@
 
 import 'package:freight_tracking/app_barrel.dart';
 
+export 'freight_repository.dart';
 export 'user_repository.dart';
 
 abstract interface class Repository<T extends Entity> {}
 
-abstract interface class CrudRepository<T extends Entity, I> implements Repository<T> {
+abstract interface class CrudRepository<T extends Entity, F extends EntityFilter> implements Repository<T> {
   Future<T> create(T entity);
 
-  Future<T> read(I id);
+  Future<T?> read(F filter);
+
+  Future<List<T>> readList(F filter);
 
   Future<T> update(T entity);
 
-  Future<void> delete(I id);
+  Future<void> delete(F filter);
 }

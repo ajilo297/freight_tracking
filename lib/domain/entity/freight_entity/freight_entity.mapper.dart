@@ -76,8 +76,8 @@ class FreightEntityMapper extends ClassMapperBase<FreightEntity> {
   @override
   final String id = 'FreightEntity';
 
-  static int _$id(FreightEntity v) => v.id;
-  static const Field<FreightEntity, int> _f$id = Field('id', _$id);
+  static int? _$id(FreightEntity v) => v.id;
+  static const Field<FreightEntity, int> _f$id = Field('id', _$id, opt: true);
   static String _$origin(FreightEntity v) => v.origin;
   static const Field<FreightEntity, String> _f$origin =
       Field('origin', _$origin);
@@ -188,14 +188,14 @@ class _FreightEntityCopyWithImpl<$R, $Out>
       FreightEntityMapper.ensureInitialized();
   @override
   $R call(
-          {int? id,
+          {Object? id = $none,
           String? origin,
           String? destination,
           FreightStatus? status,
           String? loadOwnerName,
           String? loadOwnerPhone}) =>
       $apply(FieldCopyWithData({
-        if (id != null) #id: id,
+        if (id != $none) #id: id,
         if (origin != null) #origin: origin,
         if (destination != null) #destination: destination,
         if (status != null) #status: status,

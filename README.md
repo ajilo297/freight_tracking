@@ -1,6 +1,8 @@
 # freight_tracking
 
-A new Flutter project.
+Freight Tracking Project
+
+[![codecov](https://codecov.io/gh/ajilo297/freight_tracking/graph/badge.svg?token=XE1ODUCNZ7)](https://codecov.io/gh/ajilo297/freight_tracking)
 
 ## Getting Started
 

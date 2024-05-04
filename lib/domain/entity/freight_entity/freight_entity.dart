@@ -9,7 +9,7 @@ part 'freight_entity.mapper.dart';
 @MappableClass()
 class FreightEntity extends Entity with FreightEntityMappable {
   const FreightEntity({
-    required this.id,
+    this.id,
     required this.origin,
     required this.destination,
     this.status = FreightStatus.pending,
@@ -17,7 +17,7 @@ class FreightEntity extends Entity with FreightEntityMappable {
     required this.loadOwnerPhone,
   });
 
-  final int id;
+  final int? id;
   final String origin;
   final String destination;
   final String loadOwnerName;
