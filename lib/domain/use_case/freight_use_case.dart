@@ -11,6 +11,7 @@ class FreightUseCase {
 
   Future<FreightEntity?> read(String id) async {
     // TODO(ajilo297): implement loadDetails
+    return null;
   }
 
   Future<List<FreightEntity>> readList(FreightEntityFilter filter) async {

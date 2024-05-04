@@ -28,7 +28,7 @@ class AuthCubit extends Cubit<AuthState> with ExceptionEmitter<AuthState> {
 
   void login({required String email, required String password}) {
     emitInitialOnException(() async {
-      final hashedPassword = await _useCase.getHashedPassword(password);
+      final hashedPassword = _useCase.getHashedPassword(password);
       final user = await _useCase.login(email, hashedPassword);
       if (user != null) {
         emit(AuthenticatedState(user));
@@ -51,7 +51,7 @@ class AuthCubit extends Cubit<AuthState> with ExceptionEmitter<AuthState> {
     required String password,
   }) {
     emitInitialOnException(() async {
-      final hashedPassword = await _useCase.getHashedPassword(password);
+      final hashedPassword = _useCase.getHashedPassword(password);
       final user = await _useCase.register(email, name, hashedPassword);
       if (user != null) {
         emit(AuthenticatedState(user));
