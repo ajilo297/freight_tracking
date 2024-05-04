@@ -10,6 +10,7 @@ class FreightList extends StatelessWidget {
     this.freightList = const [],
     this.loading = false,
     required this.onFreightSelected,
+    required this.refresh,
   });
 
   final List<FreightEntity> freightList;
@@ -17,31 +18,40 @@ class FreightList extends StatelessWidget {
 
   final void Function(FreightEntity freight) onFreightSelected;
 
+  final Future<void> Function() refresh;
+
   @override
   Widget build(BuildContext context) {
-    if (freightList.isEmpty && loading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-
     if (freightList.isEmpty) {
-      return const Center(
-        child: Text('No freight deliveries found'),
+      return RefreshIndicator(
+        onRefresh: refresh,
+        child: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              child: Center(
+                child: loading ? const CircularProgressIndicator() : const Text('No freight deliveries found'),
+              ),
+            ),
+          ],
+        ),
       );
     }
 
     return Column(
       children: [
         Expanded(
-          child: ListView.builder(
-            itemBuilder: (context, index) => FreightListTile(
-              onTap: () => onFreightSelected(
-                freightList.elementAt(index),
+          child: RefreshIndicator(
+            onRefresh: refresh,
+            child: ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemBuilder: (context, index) => FreightListTile(
+                onTap: () => onFreightSelected(
+                  freightList.elementAt(index),
+                ),
+                freight: freightList.elementAt(index),
               ),
-              freight: freightList.elementAt(index),
+              itemCount: freightList.length,
             ),
-            itemCount: freightList.length,
           ),
         ),
         if (loading) const LinearProgressIndicator(),

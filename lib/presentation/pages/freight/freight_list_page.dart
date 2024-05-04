@@ -21,6 +21,7 @@ class FreightListPage extends StatelessWidget {
             freightList: state.data,
             loading: state.loading,
             onFreightSelected: (freight) => context.router.push(FreightDetailsRoute(freight: freight)),
+            refresh: () async => context.read<FreightListCubit>().loadList(),
           ),
         ),
       );

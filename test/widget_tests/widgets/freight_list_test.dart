@@ -9,7 +9,7 @@ void main() {
   final now = DateTime.now();
 
   final freights = List.generate(
-      5,
+      10,
       (index) => FreightEntity(
             id: index,
             origin: 'Origin $index',
@@ -30,12 +30,13 @@ void main() {
             freightList: freights,
             loading: false,
             onFreightSelected: (freight) {},
+            refresh: () async {},
           ),
         ),
       );
 
-      expect(find.byType(FreightList), findsOneWidget);
-      expect(find.byType(FreightListTile), findsNWidgets(freights.length));
+      expect(find.byType(FreightList, skipOffstage: false), findsOneWidget);
+      expect(find.byType(FreightListTile, skipOffstage: false), findsNWidgets(freights.length));
     },
   );
 
@@ -48,6 +49,7 @@ void main() {
             freightList: const [],
             loading: true,
             onFreightSelected: (freight) {},
+            refresh: () async {},
           ),
         ),
       );
@@ -66,6 +68,7 @@ void main() {
             freightList: const [],
             loading: false,
             onFreightSelected: (freight) {},
+            refresh: () async {},
           ),
         ),
       );
@@ -84,12 +87,13 @@ void main() {
             freightList: freights,
             loading: true,
             onFreightSelected: (freight) {},
+            refresh: () async {},
           ),
         ),
       );
 
       expect(find.byType(FreightList), findsOneWidget);
-      expect(find.byType(FreightListTile), findsNWidgets(freights.length));
+      expect(find.byType(FreightListTile, skipOffstage: false), findsNWidgets(freights.length));
       expect(find.byType(LinearProgressIndicator), findsOneWidget);
     },
   );
@@ -106,12 +110,51 @@ void main() {
             onFreightSelected: (freight) {
               selectedFreight = freight;
             },
+            refresh: () async {},
           ),
         ),
       );
 
       await widgetTester.tap(find.byType(FreightListTile).first);
       expect(selectedFreight, freights.first);
+    },
+  );
+
+  testWidgets(
+    'On refreshing the list, refresh callback is called',
+    (tester) async {
+      final SemanticsHandle handle = tester.ensureSemantics();
+      bool refreshCalled = false;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: FreightList(
+            freightList: freights,
+            loading: false,
+            onFreightSelected: (freight) {},
+            refresh: () async {
+              refreshCalled = true;
+            },
+          ),
+        ),
+      );
+
+      expect(find.text('ORIGIN 1 - DESTINATION 1'), findsOneWidget);
+
+      await tester.fling(find.text('ORIGIN 1 - DESTINATION 1'), const Offset(0.0, 300.0), 1000.0);
+      expect(
+          tester.getSemantics(find.byType(RefreshProgressIndicator)),
+          matchesSemantics(
+            label: 'Refresh',
+          ));
+
+      await tester.pump(const Duration(seconds: 1));
+      await tester.pump(const Duration(seconds: 1));
+      await tester.pump(const Duration(seconds: 1));
+
+      expect(refreshCalled, true);
+
+      handle.dispose();
     },
   );
 }
