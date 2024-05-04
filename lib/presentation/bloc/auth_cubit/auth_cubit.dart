@@ -8,22 +8,9 @@ part 'auth_cubit.freezed.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> with ExceptionEmitter<AuthState> {
-  @visibleForTesting
-  AuthCubit.internal([AuthUseCase? useCase])
-      : _authUseCase = useCase,
-        super(const AuthInitialState());
+  AuthCubit(this._useCase) : super(const UnauthenticatedState());
 
-  static final AuthCubit _instance = AuthCubit.internal();
-
-  static AuthCubit get instance => _instance;
-
-  late AuthUseCase? _authUseCase;
-
-  set useCase(AuthUseCase authUseCase) {
-    _authUseCase = authUseCase;
-  }
-
-  AuthUseCase get _useCase => _authUseCase!;
+  final AuthUseCase _useCase;
 
   @override
   AuthState get loadingState => const AuthLoadingState();

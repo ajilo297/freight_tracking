@@ -8,7 +8,9 @@ export 'app_router.gr.dart';
 
 @AutoRouterConfig()
 class AppRouter extends $AppRouter implements AutoRouteGuard {
-  AppRouter();
+  AppRouter({required this.authCubit});
+
+  final AuthCubit authCubit;
 
   @override
   List<AutoRoute> get routes => [
@@ -39,7 +41,7 @@ class AppRouter extends $AppRouter implements AutoRouteGuard {
     NavigationResolver resolver,
     StackRouter router,
   ) async {
-    final state = AuthCubit.instance.state;
+    final state = authCubit.state;
 
     final bool isAuthenticated = state is AuthenticatedState;
 
