@@ -32,8 +32,8 @@ void main() {
       ),
     );
 
-    expect(find.text('Test Origin -> Test Destination'), findsOneWidget);
-    expect(find.text(FreightStatus.inTransit.shortName), findsOneWidget);
+    expect(find.text('Test Origin - Test Destination'.toUpperCase()), findsOneWidget);
+    expect(find.text(FreightStatus.inTransit.value.toUpperCase()), findsOneWidget);
   });
 
   testWidgets('Callback is called on tap', (widgetTester) async {

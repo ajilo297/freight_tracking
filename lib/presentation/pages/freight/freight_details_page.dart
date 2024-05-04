@@ -14,28 +14,34 @@ class FreightDetailsPage extends StatelessWidget {
   final FreightEntity freight;
 
   @override
-  Widget build(BuildContext context) => BlocProvider(
-        create: (context) => FreightDetailCubit(
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) {
+        return FreightDetailCubit(
           freightEntity: freight,
           useCase: context.read<FreightUseCase>(),
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Freight Details'),
         ),
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Freight Details'),
-          ),
-          body: SingleChildScrollView(
-            child: BlocConsumer<FreightDetailCubit, FreightDetailState>(
-              listener: (context, state) {
-                context.read<FreightListCubit>().loadList();
-              },
-              listenWhen: (previous, current) => previous.freight != current.freight,
-              builder: (context, state) {
-                return FreightDetailCard(
-                  freight: state.freight,
-                );
-              },
-            ),
+        body: SingleChildScrollView(
+          child: BlocConsumer<FreightDetailCubit, FreightDetailState>(
+            listener: (context, state) {
+              context.read<FreightListCubit>().loadList();
+            },
+            listenWhen: (previous, current) {
+              return previous.freight != current.freight;
+            },
+            builder: (context, state) {
+              return FreightDetailCard(
+                freight: state.freight,
+              );
+            },
           ),
         ),
-      );
+      ),
+    );
+  }
 }
