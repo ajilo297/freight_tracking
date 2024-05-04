@@ -15,6 +15,10 @@ class FreightEntity extends Entity with FreightEntityMappable {
     this.status = FreightStatus.pending,
     required this.loadOwnerName,
     required this.loadOwnerPhone,
+    required this.orderDate,
+    required this.eta,
+    this.dispatchDate,
+    this.deliveryDate,
   });
 
   final int? id;
@@ -23,15 +27,32 @@ class FreightEntity extends Entity with FreightEntityMappable {
   final String loadOwnerName;
   final String loadOwnerPhone;
 
+  final DateTime orderDate;
+  final DateTime eta;
+  final DateTime? dispatchDate;
+  final DateTime? deliveryDate;
+
   final FreightStatus status;
 }
 
 @MappableEnum()
 enum FreightStatus {
-  pending,
-  readyForDispatch,
-  inTransit,
-  delivered,
+  pending('Pending', Colors.amber, textColor: Colors.black, shortName: 'P'),
+  readyForDispatch('Ready for Dispatch', Colors.indigo, shortName: 'R'),
+  inTransit('In Transit', Colors.purple, shortName: 'T'),
+  delivered('Delivered', Colors.green, shortName: 'D');
+
+  final String value;
+  final Color color;
+  final Color textColor;
+  final String shortName;
+
+  const FreightStatus(
+    this.value,
+    this.color, {
+    this.textColor = Colors.white,
+    required this.shortName,
+  });
 }
 
 @MappableClass()

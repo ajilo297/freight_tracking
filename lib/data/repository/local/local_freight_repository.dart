@@ -19,6 +19,10 @@ final class LocalFreightRepository implements FreightRepository {
         destination: Value(entity.destination),
         loadOwnerName: Value(entity.loadOwnerName),
         loadOwnerPhone: Value(entity.loadOwnerPhone),
+        eta: Value(entity.eta),
+        orderDate: Value(entity.orderDate),
+        deliveryDate: Value(entity.deliveryDate),
+        dispatchDate: Value(entity.dispatchDate),
       ),
     );
 
@@ -31,6 +35,10 @@ final class LocalFreightRepository implements FreightRepository {
       destination: freight.destination,
       loadOwnerName: freight.loadOwnerName,
       loadOwnerPhone: freight.loadOwnerPhone,
+      eta: freight.eta,
+      orderDate: freight.orderDate,
+      deliveryDate: freight.deliveryDate,
+      dispatchDate: freight.dispatchDate,
     );
   }
 
@@ -49,6 +57,10 @@ final class LocalFreightRepository implements FreightRepository {
       destination: freight.destination,
       loadOwnerName: freight.loadOwnerName,
       loadOwnerPhone: freight.loadOwnerPhone,
+      eta: freight.eta,
+      orderDate: freight.orderDate,
+      deliveryDate: freight.deliveryDate,
+      dispatchDate: freight.dispatchDate,
     );
   }
 
@@ -67,6 +79,10 @@ final class LocalFreightRepository implements FreightRepository {
               destination: freight.destination,
               loadOwnerName: freight.loadOwnerName,
               loadOwnerPhone: freight.loadOwnerPhone,
+              eta: freight.eta,
+              orderDate: freight.orderDate,
+              deliveryDate: freight.deliveryDate,
+              dispatchDate: freight.dispatchDate,
             ))
         .toList();
   }
@@ -86,6 +102,10 @@ final class LocalFreightRepository implements FreightRepository {
         status: entity.status,
         loadOwnerName: entity.loadOwnerName,
         loadOwnerPhone: entity.loadOwnerPhone,
+        eta: freight.eta,
+        orderDate: freight.orderDate,
+        deliveryDate: freight.deliveryDate,
+        dispatchDate: freight.dispatchDate,
       ),
     );
 
@@ -99,6 +119,10 @@ final class LocalFreightRepository implements FreightRepository {
       destination: updatedFreight.destination,
       loadOwnerName: updatedFreight.loadOwnerName,
       loadOwnerPhone: updatedFreight.loadOwnerPhone,
+      eta: freight.eta,
+      orderDate: freight.orderDate,
+      deliveryDate: freight.deliveryDate,
+      dispatchDate: freight.dispatchDate,
     );
   }
 

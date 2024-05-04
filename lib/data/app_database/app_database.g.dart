@@ -313,9 +313,42 @@ class $FreightTable extends Freight with TableInfo<$FreightTable, FreightData> {
       GeneratedColumn<String>('status', aliasedName, false,
               type: DriftSqlType.string, requiredDuringInsert: true)
           .withConverter<FreightStatus>($FreightTable.$converterstatus);
+  static const VerificationMeta _orderDateMeta =
+      const VerificationMeta('orderDate');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, origin, destination, loadOwnerName, loadOwnerPhone, status];
+  late final GeneratedColumn<DateTime> orderDate = GeneratedColumn<DateTime>(
+      'order_date', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _etaMeta = const VerificationMeta('eta');
+  @override
+  late final GeneratedColumn<DateTime> eta = GeneratedColumn<DateTime>(
+      'eta', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _dispatchDateMeta =
+      const VerificationMeta('dispatchDate');
+  @override
+  late final GeneratedColumn<DateTime> dispatchDate = GeneratedColumn<DateTime>(
+      'dispatch_date', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _deliveryDateMeta =
+      const VerificationMeta('deliveryDate');
+  @override
+  late final GeneratedColumn<DateTime> deliveryDate = GeneratedColumn<DateTime>(
+      'delivery_date', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        origin,
+        destination,
+        loadOwnerName,
+        loadOwnerPhone,
+        status,
+        orderDate,
+        eta,
+        dispatchDate,
+        deliveryDate
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -360,6 +393,30 @@ class $FreightTable extends Freight with TableInfo<$FreightTable, FreightData> {
       context.missing(_loadOwnerPhoneMeta);
     }
     context.handle(_statusMeta, const VerificationResult.success());
+    if (data.containsKey('order_date')) {
+      context.handle(_orderDateMeta,
+          orderDate.isAcceptableOrUnknown(data['order_date']!, _orderDateMeta));
+    } else if (isInserting) {
+      context.missing(_orderDateMeta);
+    }
+    if (data.containsKey('eta')) {
+      context.handle(
+          _etaMeta, eta.isAcceptableOrUnknown(data['eta']!, _etaMeta));
+    } else if (isInserting) {
+      context.missing(_etaMeta);
+    }
+    if (data.containsKey('dispatch_date')) {
+      context.handle(
+          _dispatchDateMeta,
+          dispatchDate.isAcceptableOrUnknown(
+              data['dispatch_date']!, _dispatchDateMeta));
+    }
+    if (data.containsKey('delivery_date')) {
+      context.handle(
+          _deliveryDateMeta,
+          deliveryDate.isAcceptableOrUnknown(
+              data['delivery_date']!, _deliveryDateMeta));
+    }
     return context;
   }
 
@@ -382,6 +439,14 @@ class $FreightTable extends Freight with TableInfo<$FreightTable, FreightData> {
       status: $FreightTable.$converterstatus.fromSql(attachedDatabase
           .typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}status'])!),
+      orderDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}order_date'])!,
+      eta: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}eta'])!,
+      dispatchDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}dispatch_date']),
+      deliveryDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}delivery_date']),
     );
   }
 
@@ -401,13 +466,21 @@ class FreightData extends DataClass implements Insertable<FreightData> {
   final String loadOwnerName;
   final String loadOwnerPhone;
   final FreightStatus status;
+  final DateTime orderDate;
+  final DateTime eta;
+  final DateTime? dispatchDate;
+  final DateTime? deliveryDate;
   const FreightData(
       {required this.id,
       required this.origin,
       required this.destination,
       required this.loadOwnerName,
       required this.loadOwnerPhone,
-      required this.status});
+      required this.status,
+      required this.orderDate,
+      required this.eta,
+      this.dispatchDate,
+      this.deliveryDate});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -420,6 +493,14 @@ class FreightData extends DataClass implements Insertable<FreightData> {
       map['status'] =
           Variable<String>($FreightTable.$converterstatus.toSql(status));
     }
+    map['order_date'] = Variable<DateTime>(orderDate);
+    map['eta'] = Variable<DateTime>(eta);
+    if (!nullToAbsent || dispatchDate != null) {
+      map['dispatch_date'] = Variable<DateTime>(dispatchDate);
+    }
+    if (!nullToAbsent || deliveryDate != null) {
+      map['delivery_date'] = Variable<DateTime>(deliveryDate);
+    }
     return map;
   }
 
@@ -431,6 +512,14 @@ class FreightData extends DataClass implements Insertable<FreightData> {
       loadOwnerName: Value(loadOwnerName),
       loadOwnerPhone: Value(loadOwnerPhone),
       status: Value(status),
+      orderDate: Value(orderDate),
+      eta: Value(eta),
+      dispatchDate: dispatchDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dispatchDate),
+      deliveryDate: deliveryDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deliveryDate),
     );
   }
 
@@ -445,6 +534,10 @@ class FreightData extends DataClass implements Insertable<FreightData> {
       loadOwnerPhone: serializer.fromJson<String>(json['loadOwnerPhone']),
       status: $FreightTable.$converterstatus
           .fromJson(serializer.fromJson<String>(json['status'])),
+      orderDate: serializer.fromJson<DateTime>(json['orderDate']),
+      eta: serializer.fromJson<DateTime>(json['eta']),
+      dispatchDate: serializer.fromJson<DateTime?>(json['dispatchDate']),
+      deliveryDate: serializer.fromJson<DateTime?>(json['deliveryDate']),
     );
   }
   @override
@@ -458,6 +551,10 @@ class FreightData extends DataClass implements Insertable<FreightData> {
       'loadOwnerPhone': serializer.toJson<String>(loadOwnerPhone),
       'status': serializer
           .toJson<String>($FreightTable.$converterstatus.toJson(status)),
+      'orderDate': serializer.toJson<DateTime>(orderDate),
+      'eta': serializer.toJson<DateTime>(eta),
+      'dispatchDate': serializer.toJson<DateTime?>(dispatchDate),
+      'deliveryDate': serializer.toJson<DateTime?>(deliveryDate),
     };
   }
 
@@ -467,7 +564,11 @@ class FreightData extends DataClass implements Insertable<FreightData> {
           String? destination,
           String? loadOwnerName,
           String? loadOwnerPhone,
-          FreightStatus? status}) =>
+          FreightStatus? status,
+          DateTime? orderDate,
+          DateTime? eta,
+          Value<DateTime?> dispatchDate = const Value.absent(),
+          Value<DateTime?> deliveryDate = const Value.absent()}) =>
       FreightData(
         id: id ?? this.id,
         origin: origin ?? this.origin,
@@ -475,6 +576,12 @@ class FreightData extends DataClass implements Insertable<FreightData> {
         loadOwnerName: loadOwnerName ?? this.loadOwnerName,
         loadOwnerPhone: loadOwnerPhone ?? this.loadOwnerPhone,
         status: status ?? this.status,
+        orderDate: orderDate ?? this.orderDate,
+        eta: eta ?? this.eta,
+        dispatchDate:
+            dispatchDate.present ? dispatchDate.value : this.dispatchDate,
+        deliveryDate:
+            deliveryDate.present ? deliveryDate.value : this.deliveryDate,
       );
   @override
   String toString() {
@@ -484,14 +591,18 @@ class FreightData extends DataClass implements Insertable<FreightData> {
           ..write('destination: $destination, ')
           ..write('loadOwnerName: $loadOwnerName, ')
           ..write('loadOwnerPhone: $loadOwnerPhone, ')
-          ..write('status: $status')
+          ..write('status: $status, ')
+          ..write('orderDate: $orderDate, ')
+          ..write('eta: $eta, ')
+          ..write('dispatchDate: $dispatchDate, ')
+          ..write('deliveryDate: $deliveryDate')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, origin, destination, loadOwnerName, loadOwnerPhone, status);
+  int get hashCode => Object.hash(id, origin, destination, loadOwnerName,
+      loadOwnerPhone, status, orderDate, eta, dispatchDate, deliveryDate);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -501,7 +612,11 @@ class FreightData extends DataClass implements Insertable<FreightData> {
           other.destination == this.destination &&
           other.loadOwnerName == this.loadOwnerName &&
           other.loadOwnerPhone == this.loadOwnerPhone &&
-          other.status == this.status);
+          other.status == this.status &&
+          other.orderDate == this.orderDate &&
+          other.eta == this.eta &&
+          other.dispatchDate == this.dispatchDate &&
+          other.deliveryDate == this.deliveryDate);
 }
 
 class FreightCompanion extends UpdateCompanion<FreightData> {
@@ -511,6 +626,10 @@ class FreightCompanion extends UpdateCompanion<FreightData> {
   final Value<String> loadOwnerName;
   final Value<String> loadOwnerPhone;
   final Value<FreightStatus> status;
+  final Value<DateTime> orderDate;
+  final Value<DateTime> eta;
+  final Value<DateTime?> dispatchDate;
+  final Value<DateTime?> deliveryDate;
   const FreightCompanion({
     this.id = const Value.absent(),
     this.origin = const Value.absent(),
@@ -518,6 +637,10 @@ class FreightCompanion extends UpdateCompanion<FreightData> {
     this.loadOwnerName = const Value.absent(),
     this.loadOwnerPhone = const Value.absent(),
     this.status = const Value.absent(),
+    this.orderDate = const Value.absent(),
+    this.eta = const Value.absent(),
+    this.dispatchDate = const Value.absent(),
+    this.deliveryDate = const Value.absent(),
   });
   FreightCompanion.insert({
     this.id = const Value.absent(),
@@ -526,11 +649,17 @@ class FreightCompanion extends UpdateCompanion<FreightData> {
     required String loadOwnerName,
     required String loadOwnerPhone,
     required FreightStatus status,
+    required DateTime orderDate,
+    required DateTime eta,
+    this.dispatchDate = const Value.absent(),
+    this.deliveryDate = const Value.absent(),
   })  : origin = Value(origin),
         destination = Value(destination),
         loadOwnerName = Value(loadOwnerName),
         loadOwnerPhone = Value(loadOwnerPhone),
-        status = Value(status);
+        status = Value(status),
+        orderDate = Value(orderDate),
+        eta = Value(eta);
   static Insertable<FreightData> custom({
     Expression<int>? id,
     Expression<String>? origin,
@@ -538,6 +667,10 @@ class FreightCompanion extends UpdateCompanion<FreightData> {
     Expression<String>? loadOwnerName,
     Expression<String>? loadOwnerPhone,
     Expression<String>? status,
+    Expression<DateTime>? orderDate,
+    Expression<DateTime>? eta,
+    Expression<DateTime>? dispatchDate,
+    Expression<DateTime>? deliveryDate,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -546,6 +679,10 @@ class FreightCompanion extends UpdateCompanion<FreightData> {
       if (loadOwnerName != null) 'load_owner_name': loadOwnerName,
       if (loadOwnerPhone != null) 'load_owner_phone': loadOwnerPhone,
       if (status != null) 'status': status,
+      if (orderDate != null) 'order_date': orderDate,
+      if (eta != null) 'eta': eta,
+      if (dispatchDate != null) 'dispatch_date': dispatchDate,
+      if (deliveryDate != null) 'delivery_date': deliveryDate,
     });
   }
 
@@ -555,7 +692,11 @@ class FreightCompanion extends UpdateCompanion<FreightData> {
       Value<String>? destination,
       Value<String>? loadOwnerName,
       Value<String>? loadOwnerPhone,
-      Value<FreightStatus>? status}) {
+      Value<FreightStatus>? status,
+      Value<DateTime>? orderDate,
+      Value<DateTime>? eta,
+      Value<DateTime?>? dispatchDate,
+      Value<DateTime?>? deliveryDate}) {
     return FreightCompanion(
       id: id ?? this.id,
       origin: origin ?? this.origin,
@@ -563,6 +704,10 @@ class FreightCompanion extends UpdateCompanion<FreightData> {
       loadOwnerName: loadOwnerName ?? this.loadOwnerName,
       loadOwnerPhone: loadOwnerPhone ?? this.loadOwnerPhone,
       status: status ?? this.status,
+      orderDate: orderDate ?? this.orderDate,
+      eta: eta ?? this.eta,
+      dispatchDate: dispatchDate ?? this.dispatchDate,
+      deliveryDate: deliveryDate ?? this.deliveryDate,
     );
   }
 
@@ -588,6 +733,18 @@ class FreightCompanion extends UpdateCompanion<FreightData> {
       map['status'] =
           Variable<String>($FreightTable.$converterstatus.toSql(status.value));
     }
+    if (orderDate.present) {
+      map['order_date'] = Variable<DateTime>(orderDate.value);
+    }
+    if (eta.present) {
+      map['eta'] = Variable<DateTime>(eta.value);
+    }
+    if (dispatchDate.present) {
+      map['dispatch_date'] = Variable<DateTime>(dispatchDate.value);
+    }
+    if (deliveryDate.present) {
+      map['delivery_date'] = Variable<DateTime>(deliveryDate.value);
+    }
     return map;
   }
 
@@ -599,7 +756,11 @@ class FreightCompanion extends UpdateCompanion<FreightData> {
           ..write('destination: $destination, ')
           ..write('loadOwnerName: $loadOwnerName, ')
           ..write('loadOwnerPhone: $loadOwnerPhone, ')
-          ..write('status: $status')
+          ..write('status: $status, ')
+          ..write('orderDate: $orderDate, ')
+          ..write('eta: $eta, ')
+          ..write('dispatchDate: $dispatchDate, ')
+          ..write('deliveryDate: $deliveryDate')
           ..write(')'))
         .toString();
   }
@@ -616,4 +777,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [user, freight];
+  @override
+  DriftDatabaseOptions get options =>
+      const DriftDatabaseOptions(storeDateTimeAsText: true);
 }

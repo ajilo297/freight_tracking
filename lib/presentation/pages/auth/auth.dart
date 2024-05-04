@@ -18,11 +18,16 @@ final class AuthenticatedWrapperPage extends StatelessWidget implements AutoRout
   Widget build(BuildContext context) => const AutoRouter();
 
   @override
-  Widget wrappedRoute(BuildContext context) => Provider<UserEntity>.value(
-        value: context.read<AuthCubit>().state.mapOrNull(
-              authenticated: (state) => state.user,
-            )!,
-        child: this,
+  Widget wrappedRoute(BuildContext context) => RepositoryProvider(
+        create: (context) => LocalFreightRepository(context.read<AppDatabase>()),
+        child: BlocProvider(
+          create: (context) => FreightListCubit(
+            FreightUseCase(
+              context.read<LocalFreightRepository>(),
+            ),
+          )..loadList(),
+          child: this,
+        ),
       );
 }
 

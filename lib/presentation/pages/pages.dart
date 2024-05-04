@@ -3,5 +3,5 @@
  */
 
 export 'auth/auth.dart';
-export 'freight_list_page.dart';
+export 'freight/freight.dart';
 export 'splash_page.dart';

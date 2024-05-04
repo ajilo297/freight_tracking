@@ -17,7 +17,7 @@ void main() {
     'Auto Login returns User when previously logged in',
     setUp: () => when(() => useCase.autoLogin()).thenAnswer((_) async => user),
     tearDown: () => reset(useCase),
-    build: () => AuthCubit(useCase),
+    build: () => AuthCubit.test(useCase),
     act: (cubit) => cubit.autoLogin(),
     expect: () => [
       isA<AuthLoadingState>(),
@@ -29,7 +29,7 @@ void main() {
     'Auto Login returns UnauthenticatedState when no user logged in',
     setUp: () => when(() => useCase.autoLogin()).thenAnswer((_) async => null),
     tearDown: () => reset(useCase),
-    build: () => AuthCubit(useCase),
+    build: () => AuthCubit.test(useCase),
     act: (cubit) => cubit.autoLogin(),
     expect: () => [
       isA<AuthLoadingState>(),
@@ -39,7 +39,7 @@ void main() {
 
   blocTest(
     'Login returns AuthenticatedState when user credentials are correct',
-    build: () => AuthCubit(useCase),
+    build: () => AuthCubit.test(useCase),
     setUp: () {
       when(() => useCase.getHashedPassword('password')).thenReturn('hashedPassword');
       when(() => useCase.login('email', 'hashedPassword')).thenAnswer(
@@ -56,7 +56,7 @@ void main() {
 
   blocTest(
     'Login returns UnauthenticatedState when user credentials are incorrect',
-    build: () => AuthCubit(useCase),
+    build: () => AuthCubit.test(useCase),
     setUp: () {
       when(() => useCase.getHashedPassword('incorrectPassword')).thenReturn('incorrectHashedPassword');
       when(() => useCase.login('email', 'incorrectHashedPassword')).thenAnswer(
@@ -73,7 +73,7 @@ void main() {
 
   blocTest(
     'Logout returns UnauthenticatedState',
-    build: () => AuthCubit(useCase),
+    build: () => AuthCubit.test(useCase),
     setUp: () {
       when(() => useCase.logout()).thenAnswer((_) async {});
     },
@@ -87,7 +87,7 @@ void main() {
 
   blocTest(
     'Register returns AuthenticatedState when user is registered',
-    build: () => AuthCubit(useCase),
+    build: () => AuthCubit.test(useCase),
     setUp: () {
       when(() => useCase.getHashedPassword('password')).thenReturn('hashedPassword');
       when(() => useCase.register('email', 'name', 'hashedPassword')).thenAnswer(
@@ -104,7 +104,7 @@ void main() {
 
   blocTest(
     'Register returns UnauthenticatedState when user is not registered',
-    build: () => AuthCubit(useCase),
+    build: () => AuthCubit.test(useCase),
     setUp: () {
       when(() => useCase.getHashedPassword('incorrectPassword')).thenReturn('incorrectHashedPassword');
       when(() => useCase.register('email', 'name', 'incorrectHashedPassword')).thenAnswer(

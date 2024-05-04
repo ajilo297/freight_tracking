@@ -6,15 +6,21 @@ import 'package:freight_tracking/app_barrel.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  final useCase = AuthUseCase(LocalUserRepository(AppDatabase()));
-  final AuthCubit authCubit = AuthCubit(useCase)..autoLogin();
+  final db = AppDatabase();
+
+  final AuthCubit authCubit = AuthCubit.instance
+    ..useCase = AuthUseCase(LocalUserRepository(db))
+    ..autoLogin();
 
   runApp(
-    BlocProvider<AuthCubit>.value(
-      value: authCubit,
-      child: FreightTrackingApp(
-        appRouter: AppRouter(authCubit: authCubit),
-        authCubit: authCubit,
+    RepositoryProvider<AppDatabase>.value(
+      value: db,
+      child: BlocProvider<AuthCubit>.value(
+        value: authCubit,
+        child: FreightTrackingApp(
+          appRouter: AppRouter(authCubit: authCubit),
+          authCubit: authCubit,
+        ),
       ),
     ),
   );

@@ -3,3 +3,4 @@ ignore:
   - "lib/**/*.freezed.dart"
   - "lib/**/*.gr.dart"
   - "lib/**/*.mapper.dart"
+  - "lib/data/app_database/mock_data_initializer.dart"

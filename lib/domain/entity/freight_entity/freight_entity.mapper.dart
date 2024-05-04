@@ -93,6 +93,17 @@ class FreightEntityMapper extends ClassMapperBase<FreightEntity> {
   static String _$loadOwnerPhone(FreightEntity v) => v.loadOwnerPhone;
   static const Field<FreightEntity, String> _f$loadOwnerPhone =
       Field('loadOwnerPhone', _$loadOwnerPhone);
+  static DateTime _$orderDate(FreightEntity v) => v.orderDate;
+  static const Field<FreightEntity, DateTime> _f$orderDate =
+      Field('orderDate', _$orderDate);
+  static DateTime _$eta(FreightEntity v) => v.eta;
+  static const Field<FreightEntity, DateTime> _f$eta = Field('eta', _$eta);
+  static DateTime? _$dispatchDate(FreightEntity v) => v.dispatchDate;
+  static const Field<FreightEntity, DateTime> _f$dispatchDate =
+      Field('dispatchDate', _$dispatchDate, opt: true);
+  static DateTime? _$deliveryDate(FreightEntity v) => v.deliveryDate;
+  static const Field<FreightEntity, DateTime> _f$deliveryDate =
+      Field('deliveryDate', _$deliveryDate, opt: true);
 
   @override
   final MappableFields<FreightEntity> fields = const {
@@ -102,6 +113,10 @@ class FreightEntityMapper extends ClassMapperBase<FreightEntity> {
     #status: _f$status,
     #loadOwnerName: _f$loadOwnerName,
     #loadOwnerPhone: _f$loadOwnerPhone,
+    #orderDate: _f$orderDate,
+    #eta: _f$eta,
+    #dispatchDate: _f$dispatchDate,
+    #deliveryDate: _f$deliveryDate,
   };
 
   static FreightEntity _instantiate(DecodingData data) {
@@ -111,7 +126,11 @@ class FreightEntityMapper extends ClassMapperBase<FreightEntity> {
         destination: data.dec(_f$destination),
         status: data.dec(_f$status),
         loadOwnerName: data.dec(_f$loadOwnerName),
-        loadOwnerPhone: data.dec(_f$loadOwnerPhone));
+        loadOwnerPhone: data.dec(_f$loadOwnerPhone),
+        orderDate: data.dec(_f$orderDate),
+        eta: data.dec(_f$eta),
+        dispatchDate: data.dec(_f$dispatchDate),
+        deliveryDate: data.dec(_f$deliveryDate));
   }
 
   @override
@@ -174,7 +193,11 @@ abstract class FreightEntityCopyWith<$R, $In extends FreightEntity, $Out>
       String? destination,
       FreightStatus? status,
       String? loadOwnerName,
-      String? loadOwnerPhone});
+      String? loadOwnerPhone,
+      DateTime? orderDate,
+      DateTime? eta,
+      DateTime? dispatchDate,
+      DateTime? deliveryDate});
   FreightEntityCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -193,14 +216,22 @@ class _FreightEntityCopyWithImpl<$R, $Out>
           String? destination,
           FreightStatus? status,
           String? loadOwnerName,
-          String? loadOwnerPhone}) =>
+          String? loadOwnerPhone,
+          DateTime? orderDate,
+          DateTime? eta,
+          Object? dispatchDate = $none,
+          Object? deliveryDate = $none}) =>
       $apply(FieldCopyWithData({
         if (id != $none) #id: id,
         if (origin != null) #origin: origin,
         if (destination != null) #destination: destination,
         if (status != null) #status: status,
         if (loadOwnerName != null) #loadOwnerName: loadOwnerName,
-        if (loadOwnerPhone != null) #loadOwnerPhone: loadOwnerPhone
+        if (loadOwnerPhone != null) #loadOwnerPhone: loadOwnerPhone,
+        if (orderDate != null) #orderDate: orderDate,
+        if (eta != null) #eta: eta,
+        if (dispatchDate != $none) #dispatchDate: dispatchDate,
+        if (deliveryDate != $none) #deliveryDate: deliveryDate
       }));
   @override
   FreightEntity $make(CopyWithData data) => FreightEntity(
@@ -209,7 +240,11 @@ class _FreightEntityCopyWithImpl<$R, $Out>
       destination: data.get(#destination, or: $value.destination),
       status: data.get(#status, or: $value.status),
       loadOwnerName: data.get(#loadOwnerName, or: $value.loadOwnerName),
-      loadOwnerPhone: data.get(#loadOwnerPhone, or: $value.loadOwnerPhone));
+      loadOwnerPhone: data.get(#loadOwnerPhone, or: $value.loadOwnerPhone),
+      orderDate: data.get(#orderDate, or: $value.orderDate),
+      eta: data.get(#eta, or: $value.eta),
+      dispatchDate: data.get(#dispatchDate, or: $value.dispatchDate),
+      deliveryDate: data.get(#deliveryDate, or: $value.deliveryDate));
 
   @override
   FreightEntityCopyWith<$R2, FreightEntity, $Out2> $chain<$R2, $Out2>(

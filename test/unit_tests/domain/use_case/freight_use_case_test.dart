@@ -9,6 +9,8 @@ import 'package:mocktail/mocktail.dart';
 class MockFreightRepository extends Mock implements FreightRepository {}
 
 void main() {
+  final now = DateTime.now();
+
   final freightList = List.generate(
     10,
     (index) => FreightEntity(
@@ -17,6 +19,10 @@ void main() {
       destination: 'destination$index',
       loadOwnerName: 'loadOwnerName$index',
       loadOwnerPhone: 'loadOwnerPhone$index',
+      eta: now,
+      orderDate: now,
+      deliveryDate: now,
+      dispatchDate: now,
     ),
   );
 

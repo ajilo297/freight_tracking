@@ -3,6 +3,7 @@
  */
 
 export 'dart:convert';
+export 'dart:developer' show log;
 
 export 'package:auto_route/auto_route.dart';
 export 'package:crypto/crypto.dart';

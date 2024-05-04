@@ -17,4 +17,12 @@ class Freight extends Table {
   TextColumn get loadOwnerPhone => text()();
 
   TextColumn get status => textEnum<FreightStatus>()();
+
+  DateTimeColumn get orderDate => dateTime()();
+
+  DateTimeColumn get eta => dateTime()();
+
+  DateTimeColumn get dispatchDate => dateTime().nullable()();
+
+  DateTimeColumn get deliveryDate => dateTime().nullable()();
 }

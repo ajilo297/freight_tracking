@@ -17,7 +17,7 @@ void main() {
   late AppDatabase appDatabase;
 
   setUp(() {
-    appDatabase = AppDatabase(NativeDatabase.memory());
+    appDatabase = AppDatabase(queryExecutor: NativeDatabase.memory());
   });
 
   tearDown(() async {

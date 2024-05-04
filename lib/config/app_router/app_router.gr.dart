@@ -15,7 +15,7 @@ import 'package:freight_tracking/presentation/pages/auth/login_page.dart'
     as _i3;
 import 'package:freight_tracking/presentation/pages/auth/sign_up_page.dart'
     as _i4;
-import 'package:freight_tracking/presentation/pages/freight_list_page.dart'
+import 'package:freight_tracking/presentation/pages/freight/freight_list_page.dart'
     as _i2;
 import 'package:freight_tracking/presentation/pages/splash_page.dart' as _i5;
 

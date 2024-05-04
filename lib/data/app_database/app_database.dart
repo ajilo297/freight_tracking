@@ -2,11 +2,13 @@
  * Copyright (c) 2024 Ajil Oommen. All Rights Reserved
  */
 
-import 'package:freight_tracking/app_barrel.dart' show User, UserDao, Freight, FreightDao, FreightStatus;
+import 'package:freight_tracking/app_barrel.dart'
+    show User, UserDao, Freight, FreightDao, FreightStatus, MockInitializer;
 import 'package:freight_tracking/db_barrel.dart';
 
 export 'app_database_exceptions.dart';
 export 'dao/dao.dart';
+export 'mock_data_initializer.dart';
 export 'table/table.dart';
 
 part 'app_database.g.dart';
@@ -16,7 +18,9 @@ part 'app_database.g.dart';
   daos: [UserDao, FreightDao],
 )
 class AppDatabase extends _$AppDatabase {
-  AppDatabase([QueryExecutor? queryExecutor]) : super(queryExecutor ?? _openConnection());
+  AppDatabase({QueryExecutor? queryExecutor, bool initialize = false}) : super(queryExecutor ?? _openConnection()) {
+    if (initialize) initializeDb();
+  }
 
   @override
   int get schemaVersion => 1;

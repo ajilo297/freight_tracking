@@ -11,6 +11,8 @@ class MockFreightDao extends Mock implements FreightDao {}
 class MockAppDatabase extends Mock implements AppDatabase {}
 
 void main() {
+  final now = DateTime.now();
+
   final freightList = List.generate(
     10,
     (index) => FreightEntity(
@@ -20,6 +22,10 @@ void main() {
       loadOwnerName: 'loadOwnerName$index',
       loadOwnerPhone: 'loadOwnerPhone$index',
       status: FreightStatus.pending,
+      eta: now,
+      orderDate: now,
+      deliveryDate: now,
+      dispatchDate: now,
     ),
   );
 
@@ -32,6 +38,10 @@ void main() {
       loadOwnerName: 'loadOwnerName$index',
       loadOwnerPhone: 'loadOwnerPhone$index',
       status: FreightStatus.pending,
+      eta: now,
+      orderDate: now,
+      deliveryDate: now,
+      dispatchDate: now,
     ),
   );
 

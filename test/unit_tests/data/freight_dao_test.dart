@@ -7,6 +7,8 @@ import 'package:freight_tracking/app_barrel.dart';
 import 'package:freight_tracking/db_barrel.dart';
 
 void main() {
+  final now = DateTime.now();
+
   final freightDataList = List.generate(
     10,
     (index) => FreightData(
@@ -16,13 +18,17 @@ void main() {
       loadOwnerName: 'loadOwnerName$index',
       loadOwnerPhone: 'loadOwnerPhone$index',
       status: FreightStatus.pending,
+      eta: now,
+      orderDate: now,
+      deliveryDate: now,
+      dispatchDate: now,
     ),
   );
 
   late AppDatabase appDatabase;
 
   setUp(() {
-    appDatabase = AppDatabase(NativeDatabase.memory());
+    appDatabase = AppDatabase(queryExecutor: NativeDatabase.memory());
   });
 
   tearDown(() async {
