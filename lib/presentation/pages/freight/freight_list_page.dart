@@ -10,7 +10,12 @@ class FreightListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: const Text('Freight List')),
+        appBar: AppBar(
+          title: const Text('Freight List'),
+          actions: const [
+            LogoutButton(),
+          ],
+        ),
         body: BlocBuilder<FreightListCubit, FreightListState>(
           builder: (context, state) => FreightList(
             freightList: state.data,

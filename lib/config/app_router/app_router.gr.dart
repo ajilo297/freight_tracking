@@ -29,7 +29,7 @@ abstract class $AppRouter extends _i7.RootStackRouter {
     AuthenticatedWrapperRoute.name: (routeData) {
       return _i7.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i7.WrappedRoute(child: const _i1.AuthenticatedWrapperPage()),
+        child: const _i1.AuthenticatedWrapperPage(),
       );
     },
     FreightDetailsRoute.name: (routeData) {
@@ -71,11 +71,10 @@ abstract class $AppRouter extends _i7.RootStackRouter {
           orElse: () => const UnauthenticatedWrapperRouteArgs());
       return _i7.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i7.WrappedRoute(
-            child: _i1.UnauthenticatedWrapperPage(
+        child: _i1.UnauthenticatedWrapperPage(
           key: args.key,
           onLoginSuccess: args.onLoginSuccess,
-        )),
+        ),
       );
     },
   };

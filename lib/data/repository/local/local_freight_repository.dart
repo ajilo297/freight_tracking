@@ -5,7 +5,7 @@
 import 'package:freight_tracking/app_barrel.dart';
 import 'package:freight_tracking/db_barrel.dart';
 
-final class LocalFreightRepository implements FreightRepository {
+class LocalFreightRepository implements FreightRepository {
   const LocalFreightRepository(this.appDatabase);
 
   final AppDatabase appDatabase;

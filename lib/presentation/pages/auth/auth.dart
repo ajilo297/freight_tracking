@@ -9,33 +9,15 @@ export 'login_page.dart';
 export 'sign_up_page.dart';
 
 @RoutePage()
-final class AuthenticatedWrapperPage extends StatelessWidget implements AutoRouteWrapper {
-  const AuthenticatedWrapperPage({
-    super.key,
-  });
+final class AuthenticatedWrapperPage extends StatelessWidget {
+  const AuthenticatedWrapperPage({super.key});
 
   @override
-  Widget build(BuildContext context) => const AutoRouter();
-
-  @override
-  Widget wrappedRoute(BuildContext context) => RepositoryProvider(
-        create: (context) => LocalFreightRepository(context.read<AppDatabase>()),
-        child: RepositoryProvider(
-          create: (context) => FreightUseCase(
-            context.read<LocalFreightRepository>(),
-          ),
-          child: BlocProvider(
-            create: (context) => FreightListCubit(
-              context.read<FreightUseCase>(),
-            )..loadList(),
-            child: this,
-          ),
-        ),
-      );
+  Widget build(BuildContext context) => const FreightListCubitProvider(child: AutoRouter());
 }
 
 @RoutePage()
-final class UnauthenticatedWrapperPage extends StatelessWidget implements AutoRouteWrapper {
+final class UnauthenticatedWrapperPage extends StatelessWidget {
   const UnauthenticatedWrapperPage({
     super.key,
     this.onLoginSuccess,
@@ -44,28 +26,13 @@ final class UnauthenticatedWrapperPage extends StatelessWidget implements AutoRo
   final void Function(BuildContext context)? onLoginSuccess;
 
   @override
-  Widget build(BuildContext context) => const AutoRouter();
-
-  @override
-  Widget wrappedRoute(BuildContext context) => BlocListener<AuthCubit, AuthState>(
-        listener: (context, state) {
-          if (state is AuthenticatedState) {
-            onLoginSuccess?.call(context);
-          }
-        },
-        listenWhen: (previous, current) => previous != current && current is AuthenticatedState,
-        child: this,
+  Widget build(BuildContext context) => AuthLoginListener(
+        onLoginSuccess: onLoginSuccess,
+        child: const AutoRouter(),
       );
 }
 
 final loginRoutes = [
-  AutoRoute(
-    page: LoginRoute.page,
-    path: 'login',
-    initial: true,
-  ),
-  AutoRoute(
-    page: SignUpRoute.page,
-    path: 'sign-up',
-  ),
+  AutoRoute(page: LoginRoute.page, path: 'login', initial: true),
+  AutoRoute(page: SignUpRoute.page, path: 'sign-up'),
 ];

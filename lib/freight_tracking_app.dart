@@ -18,6 +18,7 @@ class FreightTrackingApp extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp.router(
         title: 'Freight Tracking',
         theme: AppTheme().theme,
+        scaffoldMessengerKey: scaffoldKey,
         routerDelegate: appRouter.delegate(
           reevaluateListenable: ReevaluateListenable.stream(
             context.read<AuthCubit>().stream,

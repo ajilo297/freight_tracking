@@ -2,6 +2,7 @@
  * Copyright (c) 2024 Ajil Oommen. All Rights Reserved
  */
 
+export 'dart:async';
 export 'dart:convert';
 export 'dart:developer' show log;
 

@@ -29,5 +29,6 @@ void main() {
 
     expect(find.text('Freight List'), findsOneWidget);
     expect(find.byType(FreightList), findsOneWidget);
+    expect(find.byType(LogoutButton), findsOneWidget);
   });
 }
