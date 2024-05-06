@@ -51,13 +51,13 @@ void main() {
       );
 
       final localUserRepository = LocalUserRepository(appDatabase);
-      final result = await localUserRepository.create(
-        email: user.email,
-        name: user.name,
-        hashedPassword: user.hashedPassword,
-      );
-
-      expect(result, null);
+      expectLater(
+          localUserRepository.create(
+            email: user.email,
+            name: user.name,
+            hashedPassword: user.hashedPassword,
+          ),
+          throwsException);
     });
   });
 
@@ -113,12 +113,14 @@ void main() {
       );
 
       final localUserRepository = LocalUserRepository(appDatabase);
-      final result = await localUserRepository.readByCredentials(
-        email: user.email,
-        hashedPassword: user.hashedPassword,
-      );
 
-      expect(result, null);
+      expectLater(
+        localUserRepository.readByCredentials(
+          email: user.email,
+          hashedPassword: user.hashedPassword,
+        ),
+        throwsException,
+      );
     });
   });
 

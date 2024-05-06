@@ -24,7 +24,7 @@ final class LocalUserRepository implements UserRepository {
       ),
     );
 
-    if (user == null) return null;
+    if (user == null) throw const UserWithEmailExistsException();
 
     return UserEntity(
       email: user.email,
@@ -56,7 +56,7 @@ final class LocalUserRepository implements UserRepository {
       hashedPassword,
     );
 
-    if (user == null) return null;
+    if (user == null) throw const InvalidCredentialsException();
 
     await appDatabase.userDao.updateUser(user.copyWith(isLoggedIn: true));
 

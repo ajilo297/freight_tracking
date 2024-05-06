@@ -60,12 +60,14 @@ void main() {
       when(() => userRepository.readByCredentials(
             email: 'email',
             hashedPassword: 'hashedPassword',
-          )).thenAnswer((_) async => null);
+          )).thenThrow(const InvalidCredentialsException());
 
       final authUseCase = AuthUseCase(userRepository);
-      final result = await authUseCase.login(user.email, user.hashedPassword);
 
-      expect(result, null);
+      expectLater(
+        authUseCase.login(user.email, user.hashedPassword),
+        throwsA(isA<InvalidCredentialsException>()),
+      );
     });
   });
 
@@ -92,16 +94,18 @@ void main() {
             email: 'email',
             name: 'name',
             hashedPassword: 'hashedPassword',
-          )).thenAnswer((_) async => null);
+          )).thenThrow(const UserWithEmailExistsException());
 
       final authUseCase = AuthUseCase(userRepository);
-      final result = await authUseCase.register(
-        'email',
-        'name',
-        'hashedPassword',
-      );
 
-      expect(result, null);
+      expectLater(
+        authUseCase.register(
+          'email',
+          'name',
+          'hashedPassword',
+        ),
+        throwsA(isA<UserWithEmailExistsException>()),
+      );
     });
   });
 
