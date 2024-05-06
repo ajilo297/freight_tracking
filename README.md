@@ -6,13 +6,66 @@ Freight Tracking Project
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is built using Flutter SDK. To get started, you need to have Flutter SDK installed on
+your machine. You can follow the instructions on
+the [official Flutter website](https://flutter.dev/docs/get-started/install) to install Flutter SDK
+on your machine.
 
-A few resources to get you started if this is your first Flutter project:
+## Running the project
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Get dependencies
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+dart pub get
+```
+
+### Generate required files
+
+```bash
+dart run build_runner build --delete-conflicting-outputs
+```
+
+### Run the project
+
+```bash
+flutter run
+```
+
+### Running tests
+
+Requires
+
+- genhtml: To generate HTML reports
+- lcov: To transform LCOV reports
+
+```bash
+chmod +x ./tools/run_tests.sh
+./tools/run_tests.sh
+```
+
+#### Test Report
+
+- [Test report](assets/test-report.html)
+- ![Coverage report](assets/coverage-report.png)
+
+## Screenshots
+
+#### Login Screen
+
+![Login Screen](assets/1.png)
+
+#### Invalid Credentials Error Snack Bar
+
+![Invalid Credentials Error Snack Bar](assets/2.png)
+
+#### Freight List Screen
+
+![Freight List Screen](assets/3.png)
+
+#### Freight Details Screen
+
+![Freight Details Screen](assets/4.png)
+
+#### Freight Details Screen - Update instructions
+
+![Freight Details Screen - Update instructions](assets/5.png)
