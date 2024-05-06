@@ -45,7 +45,7 @@ chmod +x ./tools/run_tests.sh
 
 #### Test Report
 
-[View Test report](assets/test-report.html)
+![View Test report](assets/test-report.png)
 
 #### Coverage Report
 
